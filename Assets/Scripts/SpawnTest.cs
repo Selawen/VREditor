@@ -48,7 +48,7 @@ namespace Valve.VR.InteractionSystem
             }
             GameObject block = Instantiate(spawnBlock);
 
-            //block.transform.position = hand.transform.position + hand.transform.forward;
+            block.transform.position = hand.transform.position + (hand.transform.forward*0.3f);
             //hand.AttachObject(block, GrabTypes.Pinch);
             
             Debug.Log("spawned block: " + block);
