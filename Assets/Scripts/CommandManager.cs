@@ -7,6 +7,14 @@ public class CommandManager : MonoBehaviour
     private List<ICommand> commands = new List<ICommand>();
     private int currentCommand = 0;
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Z)){
+            Undo();
+        } else if (Input.GetKeyDown(KeyCode.Y)){
+            Redo();
+        }
+    }
     public void Redo()
     {
         if (currentCommand + 1 <= commands.Count){
@@ -21,7 +29,7 @@ public class CommandManager : MonoBehaviour
     {
         if (currentCommand > 0){
             currentCommand --;
-            commands[currentCommand-1].Undo();
+            commands[currentCommand].Undo();
         } else {
             Debug.Log("no command to undo");
         }
