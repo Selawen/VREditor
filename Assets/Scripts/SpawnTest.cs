@@ -78,7 +78,7 @@ namespace Valve.VR.InteractionSystem
             {
                 if (hand.noSteamVRFallbackCamera != null)
                 {
-                    return Input.GetKeyDown(KeyCode.S);
+                    return Input.GetKeyDown(KeyCode.M);
                 }
                 else
                 {

@@ -17,17 +17,20 @@ public class SpawnCommand : MonoBehaviour, ICommand
     {
         block = Instantiate(blockPrefab);
 
-            block.transform.position = blockPosition;
-            //hand.AttachObject(block, GrabTypes.Pinch);
+        block.transform.position = blockPosition;
+        block.AddComponent<BlockStruct>();
+
+        StartCoroutine(SaveStruct());
+        //hand.AttachObject(block, GrabTypes.Pinch);
             
-            Debug.Log("spawned block: " + block);
-        Debug.Log("execute spawn");
+        Debug.Log("spawned block: " + block);
     }
 
     public void Undo()
     {
         if (block != null)
         {
+            GameObject.Find("Save").GetComponent<SaveScript>().RemoveBlock(block);
             Destroy(block);
             Debug.Log("undo spawn");
         } else {
@@ -42,11 +45,23 @@ public class SpawnCommand : MonoBehaviour, ICommand
         {
             block = Instantiate(blockPrefab);
             block.transform.position = blockPosition;
+
+            block.AddComponent<BlockStruct>();
+            StartCoroutine(SaveStruct());
+
             //hand.AttachObject(block, GrabTypes.Pinch);
             Debug.Log("redo spawn");
         } else {
             Debug.Log("nothing to redo");
         }
+    }
+
+    IEnumerator SaveStruct()
+    {
+        yield return new WaitForEndOfFrame();
+        //ToDo: implement more block types
+        GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
+        block.GetComponent<BlockStruct>().SetStruct(blockPosition, transform.rotation, SaveScript.BlockType.Cube);
     }
 
 }
