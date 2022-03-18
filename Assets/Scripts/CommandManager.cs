@@ -9,17 +9,21 @@ public class CommandManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Z)){
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
             Undo();
-        } else if (Input.GetKeyDown(KeyCode.Y)){
+        } else if (Input.GetKeyDown(KeyCode.Y))
+        {
             Redo();
         }
     }
+
     public void Redo()
     {
-        if (currentCommand + 1 <= commands.Count){
+        if (currentCommand + 1 <= commands.Count)
+        {
+            commands[currentCommand].Redo();
             currentCommand ++;
-            commands[currentCommand-1].Execute();
         } else {
             Debug.Log("no command to redo");
         }
@@ -27,7 +31,8 @@ public class CommandManager : MonoBehaviour
 
     public void Undo()
     {
-        if (currentCommand > 0){
+        if (currentCommand > 0)
+        {
             currentCommand --;
             commands[currentCommand].Undo();
         } else {
@@ -35,8 +40,10 @@ public class CommandManager : MonoBehaviour
         }
     }
 
-    public void Execute(ICommand c){
-        if (currentCommand <= commands.Count){
+    public void Execute(ICommand c)
+    {
+        if (currentCommand <= commands.Count)
+        {
             List<ICommand> tempCommands = new List<ICommand>();
             for (int i =0; i<currentCommand; i++){
                 tempCommands.Add(commands[i]);

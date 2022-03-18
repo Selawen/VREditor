@@ -30,6 +30,7 @@ namespace Valve.VR.InteractionSystem
             GameObject managerObj = GameObject.Find("CommandManager");
             if (managerObj!= null)
             commandManager = managerObj.GetComponent<CommandManager>();
+            else Debug.Log("could not find command manager");
 
         }
 

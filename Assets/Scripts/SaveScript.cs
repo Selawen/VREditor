@@ -18,6 +18,12 @@ public class SaveScript : MonoBehaviour
     public struct SaveObject
     {
         public List<BlockStruct> blocks;
+
+        public string ToSaveString()
+        {
+            string saveString = JsonUtility.ToJson(this);
+            return saveString;
+        }
     }
 
 
@@ -39,7 +45,8 @@ public class SaveScript : MonoBehaviour
                 saveObject.blocks.Add(bs);
             }
 
-            saveJson = JsonUtility.ToJson(saveObject);
+            //saveJson = JsonUtility.ToJson(saveObject);
+            saveJson = saveObject.ToSaveString();
             
             string url = Path.Combine(Application.dataPath, path);
             StreamWriter streamWriter = new StreamWriter(url, false);
@@ -68,13 +75,10 @@ public class SaveScript : MonoBehaviour
                     {
                         Instantiate(cubePrefab, b.Position(), b.Rotation());
                     }
-                }
-                else
-                {
+                } else {
                     Debug.Log("no file found");
                 }
-            } else
-            {
+            } else {
                 Debug.Log("no prefab assigned");
             }
             Debug.Log("load");
@@ -83,8 +87,7 @@ public class SaveScript : MonoBehaviour
 
     public void AddBlock(GameObject b)
     {
-        if (!blockList.Contains(b))
-        {
+        if (!blockList.Contains(b)){
             blockList.Add(b);
             Debug.Log("added block");
         }

@@ -20,7 +20,7 @@ public class SpawnCommand : MonoBehaviour, ICommand
         block.transform.position = blockPosition;
         block.AddComponent<BlockStruct>();
 
-        StartCoroutine(SaveStruct());
+        //StartCoroutine(SaveStruct());
         //hand.AttachObject(block, GrabTypes.Pinch);
             
         Debug.Log("spawned block: " + block);
@@ -47,7 +47,7 @@ public class SpawnCommand : MonoBehaviour, ICommand
             block.transform.position = blockPosition;
 
             block.AddComponent<BlockStruct>();
-            StartCoroutine(SaveStruct());
+            //StartCoroutine(SaveStruct());
 
             //hand.AttachObject(block, GrabTypes.Pinch);
             Debug.Log("redo spawn");
