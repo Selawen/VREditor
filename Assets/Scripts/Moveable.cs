@@ -61,14 +61,15 @@ namespace Valve.VR.InteractionSystem
         [HideInInspector]
         public Interactable interactable;
 
+        private CommandManager commandManager = null;
+        private Vector3 oldPos;
+        private Quaternion oldRot;
 
         //-------------------------------------------------
         protected virtual void Awake()
         {
             velocityEstimator = GetComponent<VelocityEstimator>();
             interactable = GetComponent<Interactable>();
-
-
 
             rigidbody = GetComponent<Rigidbody>();
             rigidbody.maxAngularVelocity = 50.0f;
@@ -80,8 +81,17 @@ namespace Valve.VR.InteractionSystem
                 //interactable.handFollowTransform = attachmentOffset;
             }
 
+            oldPos = transform.position;
+            oldRot = transform.rotation;
         }
 
+        private void Start()
+        {
+            GameObject managerObj = GameObject.Find("CommandManager");
+            if (managerObj != null)
+                commandManager = managerObj.GetComponent<CommandManager>();
+            else Debug.Log("could not find command manager");
+        }
 
         //-------------------------------------------------
         protected virtual void OnHandHoverBegin(Hand hand)
@@ -155,6 +165,8 @@ namespace Valve.VR.InteractionSystem
             attachPosition = transform.position;
             attachRotation = transform.rotation;
 
+            oldPos = transform.position;
+            oldRot = transform.rotation;
         }
 
 
@@ -169,6 +181,8 @@ namespace Valve.VR.InteractionSystem
 
             rigidbody.interpolation = hadInterpolation;
 
+            commandManager.Execute(new MoveCommand(transform.position, transform.rotation, oldPos, oldRot, this.gameObject));
+
             /*
             Vector3 velocity;
             Vector3 angularVelocity;
@@ -180,7 +194,7 @@ namespace Valve.VR.InteractionSystem
             */
         }
 
-
+        /*
         public virtual void GetReleaseVelocities(Hand hand, out Vector3 velocity, out Vector3 angularVelocity)
         {
             if (hand.noSteamVRFallbackCamera && releaseVelocityStyle != ReleaseStyle.NoChange)
@@ -228,7 +242,7 @@ namespace Valve.VR.InteractionSystem
                 velocity *= (scaleFactor * scaleReleaseVelocity);
             }
         }
-
+        */
         //-------------------------------------------------
         protected virtual void HandAttachedUpdate(Hand hand)
         {

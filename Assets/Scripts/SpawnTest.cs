@@ -13,6 +13,8 @@ namespace Valve.VR.InteractionSystem
         private Hand pointerHand = null;
         private Player player = null;
 
+        private CommandManager commandManager = null;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -24,6 +26,12 @@ namespace Valve.VR.InteractionSystem
                 Destroy(this.gameObject);
                 return;
             }
+
+            GameObject managerObj = GameObject.Find("CommandManager");
+            if (managerObj!= null)
+            commandManager = managerObj.GetComponent<CommandManager>();
+            else Debug.Log("could not find command manager");
+
         }
 
         // Update is called once per frame
@@ -46,12 +54,23 @@ namespace Valve.VR.InteractionSystem
                 Debug.Log("no block selected");
                 return;
             }
+            
+            if (commandManager != null)
+            {
+                Debug.Log("execute spawn");
+                commandManager.Execute(new SpawnCommand(spawnBlock, hand.transform.position + (hand.transform.forward*0.3f)));
+            } else {
+                Debug.Log("Could not find commandManager");
+            }
+
+            /*
             GameObject block = Instantiate(spawnBlock);
 
-            //block.transform.position = hand.transform.position + hand.transform.forward;
+            block.transform.position = hand.transform.position + (hand.transform.forward*0.3f);
             //hand.AttachObject(block, GrabTypes.Pinch);
             
             Debug.Log("spawned block: " + block);
+            */
         }
 
         private bool WasSpawnButtonPressed(Hand hand)
@@ -60,7 +79,7 @@ namespace Valve.VR.InteractionSystem
             {
                 if (hand.noSteamVRFallbackCamera != null)
                 {
-                    return Input.GetKeyDown(KeyCode.S);
+                    return Input.GetKeyDown(KeyCode.M);
                 }
                 else
                 {
