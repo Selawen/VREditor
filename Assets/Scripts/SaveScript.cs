@@ -71,9 +71,17 @@ void Update()
 
                     JsonUtility.FromJsonOverwrite(saveJson, saveObject);
 
+                    saveObject.ReadyLoad();
+
+                    blockList = new List<GameObject>();
+
                     foreach (BlockStruct b in saveObject.blocks)
                     {
-                        Instantiate(cubePrefab, b.Position(), b.Rotation());
+                        if (b != null)
+                        {
+                            GameObject block = Instantiate(cubePrefab, b.Position(), b.Rotation());
+                            blockList.Add(block);
+                        }
                     }
                 } else {
                     Debug.Log("no file found");
@@ -99,6 +107,7 @@ void Update()
             blockList.Remove(b);
     }
 
+    [Serializable]
     public enum BlockType
     {
         Cube,

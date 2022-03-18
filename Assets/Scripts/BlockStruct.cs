@@ -5,9 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class BlockStruct : ScriptableObject
 {
-    Vector3 position;
-    Quaternion rotation;
-    SaveScript.BlockType type;
+    public Vector3 position;
+    public Quaternion rotation;
+    public SaveScript.BlockType type;
 
     public BlockStruct(Vector3 pos, Quaternion rot, SaveScript.BlockType t)
     {
