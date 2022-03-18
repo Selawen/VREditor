@@ -73,6 +73,10 @@ void Update()
 
                     saveObject.ReadyLoad();
 
+                    foreach(GameObject block in blockList)
+                    {
+                        Destroy(block);
+                    }
                     blockList = new List<GameObject>();
 
                     foreach (BlockStruct b in saveObject.blocks)
