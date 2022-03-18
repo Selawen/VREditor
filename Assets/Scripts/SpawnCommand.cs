@@ -18,11 +18,13 @@ public class SpawnCommand : MonoBehaviour, ICommand
         block = Instantiate(blockPrefab);
 
         block.transform.position = blockPosition;
-        block.AddComponent<BlockStruct>();
+        //block.AddComponent<BlockStruct>();
 
+
+        GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
         //StartCoroutine(SaveStruct());
         //hand.AttachObject(block, GrabTypes.Pinch);
-            
+
         Debug.Log("spawned block: " + block);
     }
 
@@ -31,7 +33,8 @@ public class SpawnCommand : MonoBehaviour, ICommand
         if (block != null)
         {
             GameObject.Find("Save").GetComponent<SaveScript>().RemoveBlock(block);
-            Destroy(block);
+            block.SetActive(false);
+            //Destroy(block);
             Debug.Log("undo spawn");
         } else {
             Debug.Log("nothing to undo");
@@ -41,12 +44,15 @@ public class SpawnCommand : MonoBehaviour, ICommand
 
     public void Redo()
     {
-        if (block == null)
+        if (block != null)
         {
-            block = Instantiate(blockPrefab);
-            block.transform.position = blockPosition;
+            //block = Instantiate(blockPrefab);
+            //block.transform.position = blockPosition;
 
-            block.AddComponent<BlockStruct>();
+            //block.AddComponent<BlockStruct>();
+            block.SetActive(true);
+
+            GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
             //StartCoroutine(SaveStruct());
 
             //hand.AttachObject(block, GrabTypes.Pinch);
@@ -58,10 +64,10 @@ public class SpawnCommand : MonoBehaviour, ICommand
 
     IEnumerator SaveStruct()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
         //ToDo: implement more block types
         GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
-        block.GetComponent<BlockStruct>().SetStruct(blockPosition, transform.rotation, SaveScript.BlockType.Cube);
+        //block.GetComponent<BlockStruct>().SetStruct(blockPosition, transform.rotation, SaveScript.BlockType.Cube);
     }
 
 }

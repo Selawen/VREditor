@@ -8,41 +8,41 @@ public class SaveScript : MonoBehaviour
 {
     [SerializeField] private string path = "levelSave";
     public List<GameObject> blockList = new List<GameObject>();
-    protected SaveObject saveObject;                        //object to encapsulate list for saving using json
+    private SaveObject saveObject;                        //object to encapsulate list for saving using json
     private string saveJson;                                //the json string for saving level layout
 
     //ToDo: implemet more blck types
     [SerializeField] private GameObject cubePrefab;
 
-    [Serializable]
-    public struct SaveObject
-    {
-        public List<BlockStruct> blocks;
-
-        public string ToSaveString()
-        {
-            string saveString = JsonUtility.ToJson(this);
-            return saveString;
-        }
-    }
-
-
     // Start is called before the first frame update
     void Start()
     {
         saveObject = new SaveObject();
-    }
+        blockList = new List<GameObject>();
+}
 
-    // Update is called once per frame
-    void Update()
+// Update is called once per frame
+void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
+            saveObject = new SaveObject();
+            if (saveObject == null) Debug.Log("saveobj went wrong");
+
             foreach (GameObject b in blockList)
             {
-                BlockStruct bs = b.GetComponent<BlockStruct>();
-                bs.SetStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
-                saveObject.blocks.Add(bs);
+                if (b != null)
+                {
+                    BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
+                    //bs.SetStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
+                    if (bs != null)
+                    {
+                        saveObject.blocks.Add(bs);
+                    } else
+                    {
+                        Debug.Log("somesting went wrong creating a struct");
+                    }
+                }
             }
 
             //saveJson = JsonUtility.ToJson(saveObject);

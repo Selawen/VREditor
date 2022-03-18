@@ -50,9 +50,9 @@ public class CommandManager : MonoBehaviour
             }
             commands = tempCommands;
         }
-        currentCommand++;
         c.Execute();
         commands.Add(c);
+        currentCommand++;
     }
 
 }
