@@ -14,14 +14,12 @@ public class SaveScript : MonoBehaviour
     //ToDo: implemet more blck types
     [SerializeField] private GameObject cubePrefab;
 
-    // Start is called before the first frame update
     void Start()
     {
         saveObject = new SaveObject();
         blockList = new List<GameObject>();
 }
 
-// Update is called once per frame
 void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
