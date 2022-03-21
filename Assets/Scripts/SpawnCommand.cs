@@ -8,6 +8,14 @@ public class SpawnCommand : MonoBehaviour, ICommand
     private GameObject blockPrefab = null;
     private Vector3 blockPosition;
 
+    void Start()
+    {
+        if (blockPrefab == null)
+        {
+            Debug.Log(Resources.Load<GameObject>("Blocks/Cube").name);
+        }
+    }
+
     public SpawnCommand(GameObject prefab, Vector3 position)
     {
         blockPrefab = prefab;

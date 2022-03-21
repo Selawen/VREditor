@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using UnityEngine.UIElements;
 
 namespace Valve.VR.InteractionSystem
 {
@@ -15,6 +16,8 @@ namespace Valve.VR.InteractionSystem
 
         private CommandManager commandManager = null;
 
+        public DropdownMenu blockPicker = null;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -27,11 +30,24 @@ namespace Valve.VR.InteractionSystem
                 return;
             }
 
+            if (spawnBlock == null)
+            {
+                //Debug.Log(Resources.Load<GameObject>("Blocks/Cube").name);
+                spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
+            }
+
             GameObject managerObj = GameObject.Find("CommandManager");
             if (managerObj!= null)
             commandManager = managerObj.GetComponent<CommandManager>();
             else Debug.Log("could not find command manager");
 
+            if (blockPicker == null) 
+            {
+                GameObject blockMenu = GameObject.Find("Dropdown");
+                if (blockMenu!= null)
+                blockPicker = blockMenu.GetComponent<DropdownMenu>();
+                else Debug.Log("could not find dropdown");
+            }
         }
 
         // Update is called once per frame
@@ -57,7 +73,7 @@ namespace Valve.VR.InteractionSystem
             
             if (commandManager != null)
             {
-                Debug.Log("execute spawn");
+                //Debug.Log("execute spawn");
                 commandManager.Execute(new SpawnCommand(spawnBlock, hand.transform.position + (hand.transform.forward*0.3f)));
             } else {
                 Debug.Log("Could not find commandManager");

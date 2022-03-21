@@ -18,7 +18,7 @@ public class SaveScript : MonoBehaviour
     {
         saveObject = new SaveObject();
         blockList = new List<GameObject>();
-}
+    }
 
 void Update()
     {
@@ -99,7 +99,7 @@ void Update()
     {
         if (!blockList.Contains(b)){
             blockList.Add(b);
-            Debug.Log("added block");
+            //Debug.Log("added block");
         }
     }
 
@@ -113,6 +113,7 @@ void Update()
     public enum BlockType
     {
         Cube,
-        Plane
+        Plane,
+        Sphere
     }
 }
