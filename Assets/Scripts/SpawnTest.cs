@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UIElements;
@@ -16,7 +17,7 @@ namespace Valve.VR.InteractionSystem
 
         private CommandManager commandManager = null;
 
-        public DropdownMenu blockPicker = null;
+        public Dropdown blockPicker = null;
 
         // Start is called before the first frame update
         void Start()
@@ -41,13 +42,25 @@ namespace Valve.VR.InteractionSystem
             commandManager = managerObj.GetComponent<CommandManager>();
             else Debug.Log("could not find command manager");
 
+            //Load in block options
             if (blockPicker == null) 
             {
                 GameObject blockMenu = GameObject.Find("Dropdown");
                 if (blockMenu!= null)
-                blockPicker = blockMenu.GetComponent<DropdownMenu>();
+                blockPicker = blockMenu.GetComponent<Dropdown>();
                 else Debug.Log("could not find dropdown");
             }
+
+            List<string> optionList = new List<string>();
+
+            foreach (GameObject b in Resources.LoadAll<GameObject>("Blocks"))
+            {
+                optionList.Add(b.name);
+                //Dropdown.OptionData item = new Dropdown.OptionData();
+                //item.text = b.name;
+            }
+            
+                blockPicker.AddOptions(optionList);
         }
 
         // Update is called once per frame
