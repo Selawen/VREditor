@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Valve.VR.InteractionSystem
@@ -59,7 +59,7 @@ namespace Valve.VR.InteractionSystem
                 //Dropdown.OptionData item = new Dropdown.OptionData();
                 //item.text = b.name;
             }
-            
+                blockPicker.ClearOptions();
                 blockPicker.AddOptions(optionList);
         }
 
