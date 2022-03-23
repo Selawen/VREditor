@@ -27,7 +27,7 @@ public class SpawnCommand : MonoBehaviour, ICommand
 
         block.transform.position = blockPosition;
         //block.AddComponent<BlockStruct>();
-
+        block.tag = blockPrefab.name;
 
         GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
         //StartCoroutine(SaveStruct());
@@ -69,13 +69,4 @@ public class SpawnCommand : MonoBehaviour, ICommand
             Debug.Log("nothing to redo");
         }
     }
-
-    IEnumerator SaveStruct()
-    {
-        yield return new WaitForSeconds(0.1f);
-        //ToDo: implement more block types
-        GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
-        //block.GetComponent<BlockStruct>().SetStruct(blockPosition, transform.rotation, SaveScript.BlockType.Cube);
-    }
-
 }

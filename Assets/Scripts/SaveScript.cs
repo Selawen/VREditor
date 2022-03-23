@@ -11,8 +11,7 @@ public class SaveScript : MonoBehaviour
     private SaveObject saveObject;                        //object to encapsulate list for saving using json
     private string saveJson;                                //the json string for saving level layout
 
-    //ToDo: implemet more blck types
-    [SerializeField] private GameObject cubePrefab;
+    [SerializeField] private GameObject blockPrefab;
 
     void Start()
     {
@@ -31,14 +30,31 @@ void Update()
             {
                 if (b != null)
                 {
-                    BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
+                    BlockType blockType = BlockType.Cube;
+
+                    switch (b.tag)
+                    {
+                        case ("Cube"):
+                            blockType = BlockType.Cube;
+                            break;
+                        case ("Plane"):
+                            blockType = BlockType.Plane;
+                            break;
+                        case ("Sphere"):
+                            blockType = BlockType.Sphere;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, blockType);
                     //bs.SetStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
                     if (bs != null)
                     {
                         saveObject.blocks.Add(bs);
                     } else
                     {
-                        Debug.Log("somesting went wrong creating a struct");
+                        Debug.Log("something went wrong creating a struct");
                     }
                 }
             }
@@ -58,38 +74,62 @@ void Update()
         
         if (Input.GetKeyDown(KeyCode.L))
         {
-            if (cubePrefab != null)
+            string url = Path.Combine(Application.dataPath, path);
+            StreamReader streamReader = new StreamReader(url, false);
+            if (streamReader != null)
             {
-                string url = Path.Combine(Application.dataPath, path);
-                StreamReader streamReader = new StreamReader(url, false);
-                if (streamReader != null)
+                saveJson = streamReader.ReadToEnd();
+                streamReader.Close();
+
+                JsonUtility.FromJsonOverwrite(saveJson, saveObject);
+
+                saveObject.ReadyLoad();
+
+                foreach(GameObject block in blockList)
                 {
-                    saveJson = streamReader.ReadToEnd();
-                    streamReader.Close();
+                    Destroy(block);
+                }
+                blockList = new List<GameObject>();
 
-                    JsonUtility.FromJsonOverwrite(saveJson, saveObject);
-
-                    saveObject.ReadyLoad();
-
-                    foreach(GameObject block in blockList)
+                foreach (BlockStruct b in saveObject.blocks)
+                {
+                    if (b != null)
                     {
-                        Destroy(block);
-                    }
-                    blockList = new List<GameObject>();
-
-                    foreach (BlockStruct b in saveObject.blocks)
-                    {
-                        if (b != null)
+                        switch (b.Type())
                         {
-                            GameObject block = Instantiate(cubePrefab, b.Position(), b.Rotation());
+                            case (BlockType.Cube):
+                            {
+                                    blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
+                                break;
+                            }
+                            case (BlockType.Sphere):
+                            {
+                                    blockPrefab = Resources.Load<GameObject>("Blocks/Sphere");
+                                break;
+                            }
+                            case (BlockType.Plane):
+                            {
+                                blockPrefab = Resources.Load<GameObject>("Blocks/Plane");
+                                break;
+                            }
+                            default:
+                            {
+                                blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
+                                break;
+                            }
+                        }
+                        if (blockPrefab != null)
+                        {
+                            GameObject block = Instantiate(blockPrefab, b.Position(), b.Rotation());
                             blockList.Add(block);
+                        } else
+                        {
+                            Debug.Log("prefab block not found");
                         }
                     }
-                } else {
-                    Debug.Log("no file found");
                 }
             } else {
-                Debug.Log("no prefab assigned");
+                Debug.Log("no file found");
             }
             Debug.Log("load");
         }

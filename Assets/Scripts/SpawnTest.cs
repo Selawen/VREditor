@@ -78,6 +78,15 @@ namespace Valve.VR.InteractionSystem
 
         private void SpawnBlock(Hand hand)
         {
+            if (hand.noSteamVRFallbackCamera != null)
+            {
+                GameObject tempBlock = Resources.Load<GameObject>("Blocks/" + blockPicker.itemText);
+                if (tempBlock != null)
+                    spawnBlock = tempBlock;
+                else
+                    spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
+            }
+
             if (spawnBlock == null)
             {
                 Debug.Log("no block selected");
