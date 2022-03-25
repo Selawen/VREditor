@@ -33,16 +33,16 @@ namespace Valve.VR.InteractionSystem
 
             if (spawnBlock == null)
             {
-                //Debug.Log(Resources.Load<GameObject>("Blocks/Cube").name);
                 spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
             }
 
+            //get commandmanager to send spawn command to
             GameObject managerObj = GameObject.Find("CommandManager");
             if (managerObj!= null)
             commandManager = managerObj.GetComponent<CommandManager>();
             else Debug.Log("could not find command manager");
 
-            //Load in block options
+            //Load in block options for dropdown
             if (blockPicker == null) 
             {
                 GameObject blockMenu = GameObject.Find("Dropdown");

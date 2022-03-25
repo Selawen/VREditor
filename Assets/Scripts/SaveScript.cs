@@ -30,6 +30,7 @@ void Update()
             {
                 if (b != null)
                 {
+                    /*
                     BlockType blockType = BlockType.Cube;
 
                     switch (b.tag)
@@ -46,8 +47,8 @@ void Update()
                         default:
                             break;
                     }
-
-                    BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, blockType);
+                    */
+                    BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, b.tag);
                     //bs.SetStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
                     if (bs != null)
                     {
@@ -95,29 +96,37 @@ void Update()
                 {
                     if (b != null)
                     {
-                        switch (b.Type())
+                        if (b.typeString == null)
                         {
-                            case (BlockType.Cube):
+
+                            switch (b.Type())
                             {
-                                    blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
-                                break;
+                                case (BlockType.Cube):
+                                    {
+                                        blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
+                                        break;
+                                    }
+                                case (BlockType.Sphere):
+                                    {
+                                        blockPrefab = Resources.Load<GameObject>("Blocks/Sphere");
+                                        break;
+                                    }
+                                case (BlockType.Plane):
+                                    {
+                                        blockPrefab = Resources.Load<GameObject>("Blocks/Plane");
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
+                                        break;
+                                    }
                             }
-                            case (BlockType.Sphere):
-                            {
-                                    blockPrefab = Resources.Load<GameObject>("Blocks/Sphere");
-                                break;
-                            }
-                            case (BlockType.Plane):
-                            {
-                                blockPrefab = Resources.Load<GameObject>("Blocks/Plane");
-                                break;
-                            }
-                            default:
-                            {
-                                blockPrefab = Resources.Load<GameObject>("Blocks/Cube");
-                                break;
-                            }
+                        } else
+                        {
+                            blockPrefab = Resources.Load<GameObject>("Blocks/" + b.typeString);
                         }
+
                         if (blockPrefab != null)
                         {
                             GameObject block = Instantiate(blockPrefab, b.Position(), b.Rotation());
