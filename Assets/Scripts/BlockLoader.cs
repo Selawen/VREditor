@@ -8,6 +8,7 @@ public class BlockLoader : MonoBehaviour
     [SerializeField] private GameObject buttonPrefab;
     private void Awake()
     {
+        //create button for each block type in reference folder
         foreach (GameObject b in Resources.LoadAll<GameObject>("Blocks"))
         {
             GameObject button = Instantiate(buttonPrefab, gameObject.transform);
@@ -15,6 +16,7 @@ public class BlockLoader : MonoBehaviour
             button.GetComponentInChildren<Text>().text = b.name;
         }
 
+        //reset the layout to form a nice grid
         LayoutRebuilder.MarkLayoutForRebuild(transform as RectTransform);
         gameObject.SetActive(false);
     }

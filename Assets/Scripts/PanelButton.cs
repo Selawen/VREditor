@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
  
+/// <summary>
+/// toggle block choosing panel on and off
+/// </summary>
 public class PanelButton : MonoBehaviour
 {
     [SerializeField] private GameObject panel;

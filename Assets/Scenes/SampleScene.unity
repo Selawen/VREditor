@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 104986477}
   - component: {fileID: 104986478}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PickerPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path: levelSave
   blockList: []
-  cubePrefab: {fileID: 1000010777624494, guid: 0c69fcb888e10c04e991a728ba22439a, type: 3}
+  blockPrefab: {fileID: 0}
 --- !u!4 &1181197921
 Transform:
   m_ObjectHideFlags: 0
@@ -1488,6 +1488,7 @@ MonoBehaviour:
     needsReinit: 0
   spawnBlock: {fileID: 1000010777624494, guid: 04b2fe24ad4454a40849e873aa8125da, type: 3}
   blockPicker: {fileID: 2046440408}
+  pickerTest: 0
 --- !u!4 &1751752142
 Transform:
   m_ObjectHideFlags: 0

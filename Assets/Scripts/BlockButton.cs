@@ -12,13 +12,19 @@ public class BlockButton : MonoBehaviour
         block = _block;
         spawn = FindObjectOfType<Valve.VR.InteractionSystem.SpawnTest>();
     }
-
+    /// <summary>
+    /// set block to reference to
+    /// </summary>
+    /// <param name="_block">the block to reference</param>
     public void SetBlock(GameObject _block)
     {
         block = _block;
         spawn = FindObjectOfType<Valve.VR.InteractionSystem.SpawnTest>();
     }
 
+    /// <summary>
+    /// set referenced block as spawnblock
+    /// </summary>
     public void PickBlock()
     {
         if (spawn == null)

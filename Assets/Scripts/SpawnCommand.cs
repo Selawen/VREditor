@@ -16,6 +16,11 @@ public class SpawnCommand : MonoBehaviour, ICommand
         }
     }
 
+    /// <summary>
+    /// Command to retain the spawning of a block
+    /// </summary>
+    /// <param name="prefab">the prefab to use as a base for the block</param>
+    /// <param name="position">the position to spawn at</param>
     public SpawnCommand(GameObject prefab, Vector3 position)
     {
         blockPrefab = prefab;

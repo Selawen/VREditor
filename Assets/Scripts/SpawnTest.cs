@@ -17,7 +17,10 @@ namespace Valve.VR.InteractionSystem
 
         private CommandManager commandManager = null;
 
-        public Dropdown blockPicker = null;
+        [SerializeField] private Dropdown blockPicker = null;
+
+        //a bool for disabling resetting of manual block type change
+        public bool pickerTest;
 
         // Start is called before the first frame update
         void Start()
@@ -31,6 +34,7 @@ namespace Valve.VR.InteractionSystem
                 return;
             }
 
+            //set block to default to cube
             if (spawnBlock == null)
             {
                 spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
@@ -42,6 +46,11 @@ namespace Valve.VR.InteractionSystem
             commandManager = managerObj.GetComponent<CommandManager>();
             else Debug.Log("could not find command manager");
 
+
+            //-------------------------------------------------
+            // Loads block options to unity dropdown
+            //-------------------------------------------------
+            /*
             //Load in block options for dropdown
             if (blockPicker == null) 
             {
@@ -61,14 +70,15 @@ namespace Valve.VR.InteractionSystem
             }
                 blockPicker.ClearOptions();
                 blockPicker.AddOptions(optionList);
+            */
         }
 
         // Update is called once per frame
         void Update()
         {
+            //spawn block if spawnbutton was pressed on any controller or fallback
             foreach (Hand hand in player.hands)
             {
-                //Debug.Log(hand.name);
                 if (WasSpawnButtonPressed(hand))
                 {
                     SpawnBlock(hand);
@@ -76,15 +86,27 @@ namespace Valve.VR.InteractionSystem
             }
         }
 
+        /// <summary>
+        /// spawn the selected block in front of the hand that triggered the spawn button
+        /// </summary>
+        /// <param name="hand">the hand where the promt originated</param>
         private void SpawnBlock(Hand hand)
         {
+            //if not in VR, use fallback
             if (hand.noSteamVRFallbackCamera != null)
             {
-                GameObject tempBlock = Resources.Load<GameObject>("Blocks/" + blockPicker.itemText);
-                if (tempBlock != null)
-                    spawnBlock = tempBlock;
-                else
-                    spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
+                //a bool for disabling resetting of manual block type change
+                if (!pickerTest)
+                {
+                    GameObject tempBlock = Resources.Load<GameObject>("Blocks/" + blockPicker.itemText);
+                    if (tempBlock != null)
+                        spawnBlock = tempBlock;
+                    else
+                        spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
+                } else
+                {
+                    if (spawnBlock == null) spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
+                }
             }
 
             if (spawnBlock == null)
@@ -93,14 +115,18 @@ namespace Valve.VR.InteractionSystem
                 return;
             }
             
+            //send spawn command to command manager
             if (commandManager != null)
             {
-                //Debug.Log("execute spawn");
                 commandManager.Execute(new SpawnCommand(spawnBlock, hand.transform.position + (hand.transform.forward*0.3f)));
             } else {
                 Debug.Log("Could not find commandManager");
             }
 
+
+            //-------------------------------------------------
+            // immediately grab the spawned block
+            //-------------------------------------------------
             /*
             GameObject block = Instantiate(spawnBlock);
 
@@ -111,26 +137,34 @@ namespace Valve.VR.InteractionSystem
             */
         }
 
+        /// <summary>
+        /// Check whether spawn is valid and spawn button was pressed
+        /// </summary>
+        /// <param name="hand">hand to check input from</param>
+        /// <returns>returns whether block should be spawned</returns>
         private bool WasSpawnButtonPressed(Hand hand)
         {
             if (CanSpawn(hand))
             {
+                //get input from fallback if active, otherwise get trigger input 
                 if (hand.noSteamVRFallbackCamera != null)
                 {
                     return Input.GetKeyDown(KeyCode.M);
                 }
                 else
                 {
-                    //Debug.Log("pressed: " + spawnAction.GetStateDown(hand.handType));
                     return spawnAction.GetStateDown(hand.handType);
-
-                    //return hand.controller.GetPressDown( SteamVR_Controller.ButtonMask.Touchpad );
                 }
             }
 
             return false;
         }
 
+        /// <summary>
+        /// checks whether there's anything to prevent block spawning
+        /// </summary>
+        /// <param name="hand">hand to check</param>
+        /// <returns>returns whether spawning is valid</returns>
         public bool CanSpawn(Hand hand)
         {
             if (hand == null)
@@ -143,6 +177,7 @@ namespace Valve.VR.InteractionSystem
                 return false;
             }
 
+            //don't spawn blocks when other block is already in focus
             if (hand.hoveringInteractable != null)
             {
                 return false;
@@ -155,7 +190,7 @@ namespace Valve.VR.InteractionSystem
                     return false;
                 }
 
-                //Something is attached to the hand
+                //don't spawn blocks when already holding a block
                 if (hand.currentAttachedObject != null)
                 {
                     return false;

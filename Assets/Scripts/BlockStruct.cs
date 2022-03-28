@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// object to store block information
+/// </summary>
 [System.Serializable]
 public class BlockStruct : ScriptableObject
 {
