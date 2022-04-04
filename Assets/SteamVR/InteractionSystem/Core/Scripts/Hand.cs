@@ -1,4 +1,4 @@
-﻿//======= Copyright (c) Valve Corporation, All rights reserved. ===============
+//======= Copyright (c) Valve Corporation, All rights reserved. ===============
 //
 // Purpose: The hands used by the player in the vr interaction system
 //
@@ -136,6 +136,11 @@ namespace Valve.VR.InteractionSystem
         private GameObject applicationLostFocusObject;
 
         private SteamVR_Events.Action inputFocusAction;
+
+        //-------------------------------------------------
+        private Vector3 scale;
+        private float handDistance;
+
 
         public bool isActive
         {
@@ -358,7 +363,12 @@ namespace Valve.VR.InteractionSystem
         // flags - The flags to use for attaching the object
         // attachmentPoint - Name of the GameObject in the hierarchy of this Hand which should act as the attachment point for this GameObject
         //-------------------------------------------------
-        public void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType, AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
+        public void AttachObject(
+                                    GameObject objectToAttach, 
+                                    GrabTypes grabbedWithType, 
+                                    AttachmentFlags flags = AttachmentFlags.ParentToHand | AttachmentFlags.DetachOthers | AttachmentFlags.TurnOnKinematic, 
+                                    Transform attachmentOffset = null
+                                )
         {
             AttachedObject attachedObject = new AttachedObject();
             attachedObject.attachmentFlags = flags;
@@ -463,9 +473,15 @@ namespace Valve.VR.InteractionSystem
 
             if (attachedObject.HasAttachFlag(AttachmentFlags.ParentToHand))
             {
-                //Parent the object to the hand
-                objectToAttach.transform.parent = this.transform;
-                attachedObject.isParentedToHand = true;
+                if (otherHand != null)
+                {
+                    if (!otherHand.AttachedObjects.Contains(attachedObject))
+                    {
+                        //Parent the object to the hand
+                        objectToAttach.transform.parent = this.transform;
+                        attachedObject.isParentedToHand = true;
+                    }
+                }
             }
             else
             {
@@ -569,6 +585,10 @@ namespace Valve.VR.InteractionSystem
             attachedObjects.Add(attachedObject);
 
             UpdateHovering();
+
+            //ToDo: implement scaling
+            scale = objectToAttach.transform.localScale;
+            handDistance = Vector3.Distance(transform.position, otherHand.transform.position);
 
             if (spewDebugText)
                 HandDebugLog("AttachObject " + objectToAttach);
@@ -686,6 +706,14 @@ namespace Valve.VR.InteractionSystem
                     newTopObject.SetActive(true);
                     newTopObject.SendMessage("OnHandFocusAcquired", this, SendMessageOptions.DontRequireReceiver);
                 }
+
+                //tODO: IMPLEMENT SCALING COMMAND
+                //CommandManager manager = GameObject.Find("CommandManager").GetComponent<CommandManager>();
+                float scaleMultiplier = Vector3.Distance(transform.position, otherHand.transform.position)/handDistance;
+                
+                Vector3 newScale = scale*scaleMultiplier;
+                objectToDetach.transform.localScale = newScale;
+
             }
 
             CleanUpAttachedObjectStack();
