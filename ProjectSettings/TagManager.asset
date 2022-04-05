@@ -9,6 +9,8 @@ TagManager:
   - Cube
   - Plane
   - Sphere
+  - Cone
+  - Prism
   layers:
   - Default
   - TransparentFX
