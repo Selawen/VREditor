@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -401,9 +401,9 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
+    m_Top: 1
+    m_Bottom: 1
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 3, y: 3.5}
@@ -1747,7 +1747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f93000b2131bdf845b375cf825dacfe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: levelSave
+  path: levelSave2
   blockList: []
   blockPrefab: {fileID: 1000010777624494, guid: 0c69fcb888e10c04e991a728ba22439a, type: 3}
 --- !u!4 &1181197921
@@ -3913,7 +3913,7 @@ MonoBehaviour:
   - {fileID: 104986475}
   - {fileID: 49732028}
   text1: Pick Block
-  text2: Undo/Redo
+  text2: Undo/ Redo
 --- !u!4 &4000013166019963
 Transform:
   m_ObjectHideFlags: 0

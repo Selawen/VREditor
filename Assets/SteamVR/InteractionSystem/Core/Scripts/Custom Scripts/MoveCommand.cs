@@ -25,7 +25,7 @@ public class MoveCommand : MonoBehaviour, ICommand
     
     public void Execute()
     {
-        Debug.Log("block moved from: " + oldPosition + " to: " + newPosition);
+        //Debug.Log("block moved from: " + oldPosition + " to: " + newPosition);
     }
 
     public void Redo()
@@ -38,7 +38,7 @@ public class MoveCommand : MonoBehaviour, ICommand
 
         block.transform.position = newPosition;
         block.transform.rotation = newRotation;
-        Debug.Log("block set to: " + newPosition + " again");
+        //Debug.Log("block set to: " + newPosition + " again");
 
     }
 
@@ -52,7 +52,7 @@ public class MoveCommand : MonoBehaviour, ICommand
 
         block.transform.position = oldPosition;
         block.transform.rotation = oldRotation;
-        Debug.Log("block reset to: " + oldPosition);
+        //Debug.Log("block reset to: " + oldPosition);
 
     }
 }

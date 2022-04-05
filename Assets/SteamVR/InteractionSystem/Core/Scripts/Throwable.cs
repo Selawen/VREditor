@@ -279,6 +279,7 @@ namespace Valve.VR.InteractionSystem
 		}
 	}
 
+    /*
     public enum ReleaseStyle
     {
         NoChange,
@@ -286,4 +287,5 @@ namespace Valve.VR.InteractionSystem
         ShortEstimation,
         AdvancedEstimation,
     }
+    */
 }

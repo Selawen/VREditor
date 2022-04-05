@@ -138,6 +138,7 @@ namespace Valve.VR.InteractionSystem
         private SteamVR_Events.Action inputFocusAction;
 
         //-------------------------------------------------
+        CommandManager manager = null;
         private Vector3 scale;
         private float handDistance;
 
@@ -475,11 +476,15 @@ namespace Valve.VR.InteractionSystem
             {
                 if (otherHand != null)
                 {
-                    if (!otherHand.AttachedObjects.Contains(attachedObject))
+                    if (objectToAttach.GetComponentInParent<Hand>() != otherHand)
                     {
                         //Parent the object to the hand
                         objectToAttach.transform.parent = this.transform;
                         attachedObject.isParentedToHand = true;
+                    }
+                    else
+                    {
+                        attachedObject.isParentedToHand = false;
                     }
                 }
             }
@@ -587,6 +592,8 @@ namespace Valve.VR.InteractionSystem
             UpdateHovering();
 
             //ToDo: implement scaling
+            if (manager == null) manager = GameObject.Find("CommandManager").GetComponent<CommandManager>(); 
+
             scale = objectToAttach.transform.localScale;
             handDistance = Vector3.Distance(transform.position, otherHand.transform.position);
 
@@ -691,6 +698,17 @@ namespace Valve.VR.InteractionSystem
                     attachedObjects[index].attachedObject.SendMessage("OnDetachedFromHand", this, SendMessageOptions.DontRequireReceiver);
                 }
 
+                //tODO: IMPLEMENT SCALING COMMAND
+                if (objectToDetach.GetComponentInParent<Hand>() != this)
+                {
+                    CommandManager manager = GameObject.Find("CommandManager").GetComponent<CommandManager>();
+                    float scaleMultiplier = Vector3.Distance(transform.position, otherHand.transform.position) / handDistance;
+
+                    manager.Execute(new ScaleCommand(scale, scaleMultiplier, objectToDetach));
+                    //Vector3 newScale = scale*scaleMultiplier;
+                    //objectToDetach.transform.localScale = newScale;
+                }
+
                 attachedObjects.RemoveAt(index);
 
                 CleanUpAttachedObjectStack();
@@ -707,12 +725,7 @@ namespace Valve.VR.InteractionSystem
                     newTopObject.SendMessage("OnHandFocusAcquired", this, SendMessageOptions.DontRequireReceiver);
                 }
 
-                //tODO: IMPLEMENT SCALING COMMAND
-                //CommandManager manager = GameObject.Find("CommandManager").GetComponent<CommandManager>();
-                float scaleMultiplier = Vector3.Distance(transform.position, otherHand.transform.position)/handDistance;
                 
-                Vector3 newScale = scale*scaleMultiplier;
-                objectToDetach.transform.localScale = newScale;
 
             }
 
@@ -1132,6 +1145,15 @@ namespace Valve.VR.InteractionSystem
             GameObject attachedObject = currentAttachedObject;
             if (attachedObject != null)
             {
+                if (otherHand.grabGripAction.state)
+                {
+                    CommandManager manager = GameObject.Find("CommandManager").GetComponent<CommandManager>();
+                    float scaleMultiplier = Vector3.Distance(transform.position, otherHand.transform.position) / handDistance;
+
+                    manager.Execute(new ScaleCommand(scale, scaleMultiplier, attachedObject.gameObject));
+                    //Vector3 newScale = scale*scaleMultiplier;
+                    //objectToDetach.transform.localScale = newScale;
+                }
                 attachedObject.SendMessage("HandAttachedUpdate", this, SendMessageOptions.DontRequireReceiver);
             }
 

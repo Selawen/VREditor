@@ -61,7 +61,7 @@ namespace Valve.VR.InteractionSystem
         [HideInInspector]
         public Interactable interactable;
 
-        private CommandManager commandManager = null;
+        public CommandManager commandManager = null;
         private Vector3 oldPos;
         private Quaternion oldRot;
 

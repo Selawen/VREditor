@@ -7,7 +7,7 @@ public class ScaleCommand : MonoBehaviour, ICommand
     GameObject block;
     Vector3 oldScale, newScale;
 
-    ScaleCommand(Vector3 scale, float scaleMultiplier, GameObject scaledObject)
+    public ScaleCommand(Vector3 scale, float scaleMultiplier, GameObject scaledObject)
     {
         block = scaledObject;
         oldScale = scale;
