@@ -26,14 +26,25 @@ public class PanelButton : MonoBehaviour
             }
             panel.SetActive(!panel.activeSelf);
         }
-        
+
         Text label = GetComponentInChildren<Text>();
         if (label.text == text1)
         {
             label.text = text2;
-        } else
+        }
+        else
         {
             label.text = text1;
+        } 
+    }
+
+    public void TogglePanel()
+    {
+        if (panels[0] == null)
+        {
+            Debug.Log("no panel set");
+            return;
         }
+        panels[0].SetActive(!panels[0].activeSelf);
     }
 }
