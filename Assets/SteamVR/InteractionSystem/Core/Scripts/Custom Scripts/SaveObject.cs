@@ -35,7 +35,7 @@ public class SaveObject:ScriptableObject
     {
         foreach(string s in blockStrings)
         {
-            BlockStruct bs = new BlockStruct(Vector3.zero, new Quaternion(), SaveScript.BlockType.Cube);
+            BlockStruct bs = new BlockStruct();
             JsonUtility.FromJsonOverwrite(s, bs);
             blocks.Add(bs);
         }

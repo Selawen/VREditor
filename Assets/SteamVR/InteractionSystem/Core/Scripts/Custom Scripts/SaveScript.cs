@@ -44,7 +44,7 @@ void Update()
         {
             if (b != null)
             {
-                BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, b.tag);
+                BlockStruct bs = new BlockStruct(b.transform.position, b.transform.rotation, b.tag, b.transform.lossyScale);
                 //bs.SetStruct(b.transform.position, b.transform.rotation, BlockType.Cube);
                 if (bs != null)
                 {
@@ -107,6 +107,9 @@ void Update()
                     if (blockPrefab != null)
                     {
                         GameObject block = Instantiate(blockPrefab, b.Position(), b.Rotation());
+                        if (b.Scale() != Vector3.zero)
+                            block.transform.localScale = b.Scale();
+
                         blockList.Add(block);
                     }
                     else

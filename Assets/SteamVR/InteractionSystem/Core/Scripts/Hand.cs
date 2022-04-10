@@ -541,6 +541,7 @@ namespace Valve.VR.InteractionSystem
                 {
                     if (attachmentOffset != null)
                     {
+                    //Debug.Log("setting attach offset");
                         //get the initial positional and rotational offsets between the hand and the offset transform
                         Quaternion rotDiff = Quaternion.Inverse(attachmentOffset.transform.rotation) * objectToAttach.transform.rotation;
                         Quaternion targetRotation = attachedObject.handAttachmentPointTransform.rotation * rotDiff;

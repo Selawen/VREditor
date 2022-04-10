@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1000010777624494}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 3708566926727542038}
   m_Father: {fileID: 0}
@@ -71,7 +71,7 @@ MonoBehaviour:
   hideControllerOnAttach: 1
   handAnimationOnPickup: 0
   setRangeOfMotionOnPickup: -1
-  useHandObjectAttachmentPoint: 1
+  useHandObjectAttachmentPoint: 0
   attachEaseIn: 0
   snapAttachEaseInCurve:
     serializedVersion: 2
@@ -233,6 +233,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   interactable: {fileID: 0}
+  commandManager: {fileID: 0}
 --- !u!1 &9153907100397951304
 GameObject:
   m_ObjectHideFlags: 0
