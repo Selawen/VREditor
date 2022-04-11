@@ -12,15 +12,12 @@ namespace Valve.VR.InteractionSystem
 
         public GameObject spawnBlock = null;
 
-        private Hand pointerHand = null;
         private Player player = null;
 
         private CommandManager commandManager = null;
 
-        [SerializeField] private Dropdown blockPicker = null;
-
         //a bool for disabling resetting of manual block type change
-        public bool pickerTest;
+        //public bool pickerTest;
 
         // Start is called before the first frame update
         void Start()
@@ -45,32 +42,6 @@ namespace Valve.VR.InteractionSystem
             if (managerObj!= null)
             commandManager = managerObj.GetComponent<CommandManager>();
             else Debug.Log("could not find command manager");
-
-
-            //-------------------------------------------------
-            // Loads block options to unity dropdown
-            //-------------------------------------------------
-            /*
-            //Load in block options for dropdown
-            if (blockPicker == null) 
-            {
-                GameObject blockMenu = GameObject.Find("Dropdown");
-                if (blockMenu!= null)
-                blockPicker = blockMenu.GetComponent<Dropdown>();
-                else Debug.Log("could not find dropdown");
-            }
-
-            List<string> optionList = new List<string>();
-
-            foreach (GameObject b in Resources.LoadAll<GameObject>("Blocks"))
-            {
-                optionList.Add(b.name);
-                //Dropdown.OptionData item = new Dropdown.OptionData();
-                //item.text = b.name;
-            }
-                blockPicker.ClearOptions();
-                blockPicker.AddOptions(optionList);
-            */
         }
 
         // Update is called once per frame
@@ -92,23 +63,6 @@ namespace Valve.VR.InteractionSystem
         /// <param name="hand">the hand where the promt originated</param>
         private void SpawnBlock(Hand hand)
         {
-            //if not in VR, use fallback
-            if (hand.noSteamVRFallbackCamera != null)
-            {
-                //a bool for disabling resetting of manual block type change
-                if (!pickerTest)
-                {
-                    GameObject tempBlock = Resources.Load<GameObject>("Blocks/" + blockPicker.itemText);
-                    if (tempBlock != null)
-                        spawnBlock = tempBlock;
-                    else
-                        spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
-                } else
-                {
-                    if (spawnBlock == null) spawnBlock = Resources.Load<GameObject>("Blocks/Cube");
-                }
-            }
-
             if (spawnBlock == null)
             {
                 Debug.Log("no block selected");
@@ -165,7 +119,7 @@ namespace Valve.VR.InteractionSystem
         /// </summary>
         /// <param name="hand">hand to check</param>
         /// <returns>returns whether spawning is valid</returns>
-        public bool CanSpawn(Hand hand)
+        private bool CanSpawn(Hand hand)
         {
             if (hand == null)
             {

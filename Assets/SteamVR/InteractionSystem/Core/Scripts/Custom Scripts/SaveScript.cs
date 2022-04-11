@@ -19,7 +19,7 @@ public class SaveScript : MonoBehaviour
         blockList = new List<GameObject>();
     }
 
-void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -145,13 +145,5 @@ void Update()
     {
         if (blockList.Contains(b))
             blockList.Remove(b);
-    }
-
-    [Serializable]
-    public enum BlockType
-    {
-        Cube,
-        Plane,
-        Sphere
     }
 }

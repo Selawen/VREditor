@@ -7,6 +7,7 @@ public class SpawnCommand : MonoBehaviour, ICommand
     private GameObject block = null;
     private GameObject blockPrefab = null;
     private Vector3 blockPosition;
+    private SaveScript saveScript;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class SpawnCommand : MonoBehaviour, ICommand
         {
             Debug.Log(Resources.Load<GameObject>("Blocks/Cube").name);
         }
+        saveScript = GameObject.Find("Save").GetComponent<SaveScript>();
     }
 
     /// <summary>
@@ -31,24 +33,20 @@ public class SpawnCommand : MonoBehaviour, ICommand
         block = Instantiate(blockPrefab);
 
         block.transform.position = blockPosition;
-        //block.AddComponent<BlockStruct>();
         block.tag = blockPrefab.name;
 
-        GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
-        //StartCoroutine(SaveStruct());
-        //hand.AttachObject(block, GrabTypes.Pinch);
+        saveScript.AddBlock(block);
 
-        Debug.Log("spawned block: " + block);
+        //Debug.Log("spawned block: " + block);
     }
 
     public void Undo()
     {
         if (block != null)
         {
-            GameObject.Find("Save").GetComponent<SaveScript>().RemoveBlock(block);
+            saveScript.RemoveBlock(block);
             block.SetActive(false);
-            //Destroy(block);
-            Debug.Log("undo spawn");
+            //Debug.Log("undo spawn");
         } else {
             Debug.Log("nothing to undo");
         }
@@ -59,17 +57,10 @@ public class SpawnCommand : MonoBehaviour, ICommand
     {
         if (block != null)
         {
-            //block = Instantiate(blockPrefab);
-            //block.transform.position = blockPosition;
-
-            //block.AddComponent<BlockStruct>();
             block.SetActive(true);
 
-            GameObject.Find("Save").GetComponent<SaveScript>().AddBlock(block);
-            //StartCoroutine(SaveStruct());
-
-            //hand.AttachObject(block, GrabTypes.Pinch);
-            Debug.Log("redo spawn");
+            saveScript.AddBlock(block);
+            //Debug.Log("redo spawn");
         } else {
             Debug.Log("nothing to redo");
         }

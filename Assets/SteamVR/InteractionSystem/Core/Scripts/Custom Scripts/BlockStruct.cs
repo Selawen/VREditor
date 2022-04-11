@@ -10,7 +10,6 @@ public class BlockStruct : ScriptableObject
 {
     public Vector3 position;
     public Quaternion rotation;
-    public SaveScript.BlockType type;
     public string typeString = null;
     public Vector3 scale;
 
@@ -18,12 +17,7 @@ public class BlockStruct : ScriptableObject
     {
 
     }
-    public BlockStruct(Vector3 pos, Quaternion rot, SaveScript.BlockType t)
-    {
-        position = pos;
-        rotation = rot;
-        type = t;
-    }
+
     public BlockStruct(Vector3 pos, Quaternion rot, string t)
     {
         position = pos;
@@ -37,12 +31,7 @@ public class BlockStruct : ScriptableObject
         typeString = t;
         scale = s;
     }
-    public void SetStruct(Vector3 pos, Quaternion rot, SaveScript.BlockType t)
-    {
-        position = pos;
-        rotation = rot;
-        type = t;
-    }
+
     public void SetStruct(Vector3 pos, Quaternion rot, string t)
     {
         position = pos;
@@ -64,11 +53,6 @@ public class BlockStruct : ScriptableObject
     public Quaternion Rotation()
     {
         return rotation;
-    }
-
-    public SaveScript.BlockType Type()
-    {
-        return type;
     }
 
     public Vector3 Scale()
